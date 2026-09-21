@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2b">
+  <meta name="description" content="Paired multi-speaker voice anonymization audio examples for the SMVA framework, with Qwen3-TTS and X-VC backends.">
+  <title>SMVA · Audio Samples</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101b2b'/%3E%3Cpath d='M7 32h7l4-12 7 24 6-31 7 38 7-25 5 6h9' fill='none' stroke='%2375dfd0' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="samples.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#samples">Skip to audio samples</a>
+  <header class="site-header">
+    <div class="brand" aria-label="SMVA Audio Samples"><span class="brand-mark" aria-hidden="true">∿</span><span>SMVA <small>Audio Samples</small></span></div>
+    <nav aria-label="Page sections"><a href="#samples">Ours</a><a href="#official-msa">MSA official</a><a href="#method">Method</a><a href="#about">Protocol</a></nav>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <p class="eyebrow">STREAMING MULTI-SPEAKER VOICE ANONYMIZATION</p>
+        <h1 id="intro-title">One conversation.<br><em>Three ways to hear it.</em></h1>
+        <p>Compare each original MSA conversation with anonymized audio rendered by Qwen3-TTS and X-VC. The 12 paired development examples cover two to five speakers.</p>
+      </div>
+      <div class="intro-stat" aria-label="Gallery summary"><strong>12</strong><span>paired conversations</span><div class="stat-rule"></div><strong>2–5</strong><span>speakers per conversation</span></div>
+    </section>
+
+    <section id="samples" class="samples-section" aria-labelledby="samples-title">
+      <div class="section-head"><div><p class="eyebrow">PAIRED LISTENING</p><h2 id="samples-title">Audio examples</h2></div><p class="section-note">The same session appears in each of the three audio columns. Use headphones to inspect voice identity across turns.</p></div>
+      <div class="filters" role="group" aria-label="Filter by number of speakers">
+        <button class="filter active" data-filter="all" aria-pressed="true">All <span>12</span></button>
+        <button class="filter" data-filter="2" aria-pressed="false">2 speakers <span>3</span></button>
+        <button class="filter" data-filter="3" aria-pressed="false">3 speakers <span>3</span></button>
+        <button class="filter" data-filter="4" aria-pressed="false">4 speakers <span>3</span></button>
+        <button class="filter" data-filter="5" aria-pressed="false">5 speakers <span>3</span></button>
+      </div>
+      <div class="column-key" aria-hidden="true"><span>Conversation</span><span>Source</span><span>Qwen3-TTS</span><span>X-VC</span></div>
+      <div id="sample-list" class="sample-list" aria-live="polite"></div>
+      <p class="sample-caveat">These are selected development-set listening examples, not held-out aggregate results. No case-level number shown here should be interpreted as official MSA DER.</p>
+    </section>
+
+    <section id="official-msa" class="official-section" aria-labelledby="official-title">
+      <div class="section-head"><div><p class="eyebrow">AUTHOR-HOSTED BENCHMARK AUDIO</p><h2 id="official-title">Official MSA examples</h2></div><p class="section-note">One official conversation per speaker count, with the original and four published anonymization baselines. These are <strong>not</strong> the same conversations as the paired examples above.</p></div>
+      <div id="official-list" class="official-list"></div>
+      <p class="sample-caveat">The players load directly from the <a href="https://xiaoxiaomiao323.github.io/msa-audio/" target="_blank" rel="noopener noreferrer">MSA authors’ audio site</a>; the official files are not copied into this repository. These examples use the authors’ predicted-RTTM set.</p>
+    </section>
+
+    <section id="method" class="method-section" aria-labelledby="method-title">
+      <div class="section-head"><div><p class="eyebrow">FRAMEWORK</p><h2 id="method-title">What stays consistent</h2></div><p class="section-note">The framework handles incoming speech and session-level identity before a replaceable speech-generation backend renders the audio.</p></div>
+      <div class="method-flow">
+        <article class="method-card"><span class="stage-number">01 / STREAMING</span><h3>Process each incoming chunk</h3><p>Activity prediction and boundary refinement precede speaker and content encoding. A within-chunk speaker change can alter the committed segment boundary.</p></article>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <article class="method-card"><span class="stage-number">02 / SAA</span><h3>Keep identities across turns</h3><p>Speaker assignment maintains a local ID and stored representation. Anonymization binds each local ID to a consistent pseudo-speaker representation.</p></article>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <article class="method-card"><span class="stage-number">03 / RENDERING</span><h3>Change the backend</h3><p>The audio examples instantiate the downstream generator as either Qwen3-TTS or X-VC. They are two backend comparisons, not a claim that both use identical conditioning inputs.</p></article>
+      </div>
+    </section>
+
+    <section id="about" class="about-section" aria-labelledby="about-title"><div><p class="eyebrow">SOURCE &amp; SCOPE</p><h2 id="about-title">About these samples</h2></div><div class="about-copy"><p>The source conversations come from the <a href="https://github.com/xiaoxiaomiao323/MSA" target="_blank" rel="noopener noreferrer">MSA benchmark</a>, constructed from <a href="https://www.openslr.org/12/" target="_blank" rel="noopener noreferrer">LibriSpeech</a> recordings. The Qwen3-TTS and X-VC versions were recovered from the same fixed 64-session development experiment. Three paired sessions were selected per speaker count; all recovered files were checked for presence and valid WAV format.</p><p>The original source WAVs were converted from 16-kHz float to 16-kHz PCM for browser playback; no new model inference or rescoring was performed. The separate official MSA section links to the authors’ own audio, using different conversation IDs. This page is a listening supplement, not a substitute for the paper’s full-set VPC2026 privacy/utility results or official MSA diarization protocol.</p><p class="attribution">Audio attribution: MSA benchmark by Xiaoxiao Miao et al.; LibriSpeech by Vassil Panayotov et al. Please consult the upstream terms before reusing the audio. Website code and future model-release materials are tracked separately from the audio assets.</p></div></section>
+  </main>
+  <footer><span>SMVA · Research audio supplement</span><span>Code release in preparation</span></footer>
+</body>
+</html>
