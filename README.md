@@ -8,7 +8,7 @@ A separate section embeds the MSA authors' [published audio examples](https://xi
 
 ## Contents
 
-- `dist/` — self-contained static website and browser-compatible audio files.
+- `dist/` — the local, self-contained static website and browser-compatible audio files. The published GitHub Pages snapshot places these files at the repository root, with audio under `audio/spk2`–`audio/spk5`.
 - `AUDIO_PROVENANCE.md` — dataset attribution, experiment roots, and selection scope.
 - `CODE_RELEASE_PLAN.md` — intended structure and validation gates for a later model-code release. No model weights or private evaluation assets are included.
 
@@ -18,7 +18,7 @@ From `dist/`, start any static HTTP server, then open its printed local URL. For
 
 ## GitHub Pages
 
-The included workflow deploys `dist/` when Pages is configured with **GitHub Actions** as its source. It does not publish training code or raw project directories. Audio files are intentionally tracked as site assets; do not add an all-audio Git LFS rule because ordinary GitHub Pages cannot play LFS pointer files.
+The published repository serves the website from the `main` branch root. The local `dist/` directory is its staging copy. It does not publish training code or raw project directories. Audio files are intentionally tracked as site assets; do not add an all-audio Git LFS rule because ordinary GitHub Pages cannot play LFS pointer files.
 
 ## Audio terms
 
