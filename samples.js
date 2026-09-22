@@ -1,78 +1,9 @@
 const sessions = [
-  { speakers: 2, ids: [
-    '121-123859_3729-6852',
-    '1221-135767_5683-32866',
-    '7127-75947_6829-68769'
-  ] },
-  { speakers: 3, ids: [
-    '1221-135766_1284-134647_6930-75918',
-    '1284-1180_8230-279154_1188-133604',
-    '1320-122612_3729-6852_672-122797'
-  ] },
-  { speakers: 4, ids: [
-    '1089-134691_1580-141084_1284-1180_8224-274384',
-    '1221-135766_61-70968_1320-122612_8455-210777',
-    '1284-1180_1284-1181_4446-2273_7176-88083'
-  ] },
-  { speakers: 5, ids: [
-    '6829-68769_4992-41806_1995-1837_8455-210777_8224-274381',
-    '1089-134686_2830-3980_7729-102255_1221-135766_4992-41806',
-    '1284-134647_237-126133_8455-210777_121-127105_5683-32879'
-  ] }
+  { speakers: 2, ids: ['121-123859_3729-6852', '1221-135767_5683-32866', '7127-75947_6829-68769'] },
+  { speakers: 3, ids: ['1221-135766_1284-134647_6930-75918', '1284-1180_8230-279154_1188-133604', '1320-122612_3729-6852_672-122797'] },
+  { speakers: 4, ids: ['1089-134691_1580-141084_1284-1180_8224-274384', '1221-135766_61-70968_1320-122612_8455-210777', '1284-1180_1284-1181_4446-2273_7176-88083'] },
+  { speakers: 5, ids: ['6829-68769_4992-41806_1995-1837_8455-210777_8224-274381', '1089-134686_2830-3980_7729-102255_1221-135766_4992-41806', '1284-134647_237-126133_8455-210777_121-127105_5683-32879'] }
 ];
-
-const list = document.querySelector('#sample-list');
-const filters = Array.from(document.querySelectorAll('.filter'));
-
-function audioCell(speakerCount, caseIndex, role, label, className) {
-  const cell = document.createElement('div');
-  cell.className = `audio-cell ${className}`;
-  const heading = document.createElement('p');
-  heading.className = 'audio-label';
-  heading.textContent = label;
-  const player = document.createElement('audio');
-  player.controls = true;
-  player.preload = 'none';
-  player.setAttribute('aria-label', `${speakerCount}-speaker case ${caseIndex}: ${label}`);
-  player.src = `audio/spk${speakerCount}/example0${caseIndex}-${role}.wav`;
-  cell.append(heading, player);
-  return cell;
-}
-
-function render(selected = 'all') {
-  list.replaceChildren();
-  sessions.filter(group => selected === 'all' || String(group.speakers) === selected).forEach(group => {
-    group.ids.forEach((id, index) => {
-      const row = document.createElement('article');
-      row.className = 'sample-row';
-      const info = document.createElement('div');
-      info.className = 'case-info';
-      const heading = document.createElement('div');
-      heading.className = 'case-meta';
-      heading.innerHTML = `<span class="speaker-pill">${group.speakers} speakers</span><span class="case-number">Example ${String(index + 1).padStart(2, '0')}</span>`;
-      const sid = document.createElement('p');
-      sid.className = 'session-id';
-      sid.textContent = id;
-      info.append(heading, sid);
-      row.append(info,
-        audioCell(group.speakers, index + 1, 'source', 'Source', 'source'),
-        audioCell(group.speakers, index + 1, 'qwen3tts', 'Qwen3-TTS', 'qwen'),
-        audioCell(group.speakers, index + 1, 'xvc', 'X-VC', 'xvc'));
-      list.append(row);
-    });
-  });
-}
-
-filters.forEach(button => button.addEventListener('click', () => {
-  filters.forEach(other => {
-    const active = other === button;
-    other.classList.toggle('active', active);
-    other.setAttribute('aria-pressed', String(active));
-  });
-  render(button.dataset.filter);
-}));
-
-render();
 
 const officialSessions = [
   { speakers: 2, id: '4446-2271_2961-960' },
@@ -82,42 +13,92 @@ const officialSessions = [
 ];
 const officialMethods = [
   { directory: 'ori', label: 'Original (ORI)' },
-  { directory: 'res', label: 'Resynthesis (RES)' },
-  { directory: 'select', label: 'Selection (SELECT)' },
+  { directory: 'res', label: 'RES' },
+  { directory: 'select', label: 'SELECT' },
   { directory: 'ds', label: 'DS' },
   { directory: 'as', label: 'AS' }
 ];
 const officialBase = 'https://xiaoxiaomiao323.github.io/msa-audio/predict_rttm';
-const officialList = document.querySelector('#official-list');
 
-officialSessions.forEach(({ speakers, id }) => {
-  const card = document.createElement('article');
-  card.className = 'official-card';
-  const header = document.createElement('div');
-  header.className = 'official-card-header';
-  const pill = document.createElement('span');
-  pill.className = 'speaker-pill';
-  pill.textContent = `${speakers} speakers`;
-  const session = document.createElement('span');
-  session.className = 'session-id';
-  session.textContent = id;
-  header.append(pill, session);
-  const players = document.createElement('div');
-  players.className = 'official-audios';
-  officialMethods.forEach(({ directory, label }) => {
-    const cell = document.createElement('div');
-    cell.className = 'official-audio';
-    const heading = document.createElement('p');
-    heading.textContent = label;
-    const player = document.createElement('audio');
-    player.controls = true;
-    player.preload = 'none';
-    player.setAttribute('aria-label', `Official MSA ${speakers}-speaker ${label}`);
-    const filename = directory === 'ori' ? `${id}.wav` : `${id}_gen.wav`;
-    player.src = `${officialBase}/${directory}/${filename}`;
-    cell.append(heading, player);
-    players.append(cell);
+function audioCell(src, label) {
+  const cell = document.createElement('td');
+  const player = document.createElement('audio');
+  player.controls = true;
+  player.preload = 'none';
+  player.src = src;
+  player.setAttribute('aria-label', label);
+  const link = document.createElement('a');
+  link.className = 'audio-link';
+  link.href = src;
+  link.textContent = 'open audio';
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  cell.append(player, link);
+  return cell;
+}
+
+function createTable(headers) {
+  const wrap = document.createElement('div');
+  wrap.className = 'table-wrap';
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+  headers.forEach((label, index) => {
+    const th = document.createElement('th');
+    th.textContent = label;
+    if (index > 0) th.className = 'audio-col';
+    tr.append(th);
   });
-  card.append(header, players);
-  officialList.append(card);
+  thead.append(tr);
+  const tbody = document.createElement('tbody');
+  table.append(thead, tbody);
+  wrap.append(table);
+  return { wrap, tbody };
+}
+
+function group(title, parent) {
+  const section = document.createElement('section');
+  section.className = 'speaker-group';
+  const h3 = document.createElement('h3');
+  h3.textContent = title;
+  section.append(h3);
+  parent.append(section);
+  return section;
+}
+
+function sessionCell(id) {
+  const td = document.createElement('td');
+  td.className = 'session-id';
+  td.textContent = id;
+  return td;
+}
+
+const pairedRoot = document.querySelector('#sample-groups');
+sessions.forEach(({ speakers, ids }) => {
+  const section = group(`${speakers} speakers`, pairedRoot);
+  const { wrap, tbody } = createTable(['Session ID', 'Original', 'SMVA + Qwen3-TTS', 'SMVA + X-VC']);
+  ids.forEach((id, index) => {
+    const prefix = `audio/spk${speakers}/example0${index + 1}`;
+    const row = document.createElement('tr');
+    row.append(sessionCell(id),
+      audioCell(`${prefix}-source.wav`, `${speakers}-speaker original session ${id}`),
+      audioCell(`${prefix}-qwen3tts.wav`, `${speakers}-speaker Qwen3-TTS session ${id}`),
+      audioCell(`${prefix}-xvc.wav`, `${speakers}-speaker X-VC session ${id}`));
+    tbody.append(row);
+  });
+  section.append(wrap);
+});
+
+const officialRoot = document.querySelector('#official-groups');
+officialSessions.forEach(({ speakers, id }) => {
+  const section = group(`${speakers} speakers`, officialRoot);
+  const { wrap, tbody } = createTable(['Session ID', ...officialMethods.map(method => method.label)]);
+  const row = document.createElement('tr');
+  row.append(sessionCell(id));
+  officialMethods.forEach(({ directory, label }) => {
+    const filename = directory === 'ori' ? `${id}.wav` : `${id}_gen.wav`;
+    row.append(audioCell(`${officialBase}/${directory}/${filename}`, `Official MSA ${speakers}-speaker ${label} session ${id}`));
+  });
+  tbody.append(row);
+  section.append(wrap);
 });

@@ -1,6 +1,6 @@
 # SMVA audio samples
 
-Static, GitHub Pages-ready listening supplement for **SMVA: A Streaming Multi-Speaker Voice Anonymization Method for Real-Time Conversations**.
+Static, GitHub Pages-ready listening supplement for **SMVA: A Streaming Multi-Speaker Voice Anonymization Method for Real-Time Conversations**. The page follows a paper-style layout with an overview and method-grouped audio tables.
 
 The gallery contains 12 paired MSA clean development conversations: three each with 2, 3, 4, and 5 speakers. Every row lets a listener compare the source conversation with Qwen3-TTS and X-VC anonymized reconstructions of that same session. The website does **not** report these handpicked examples as official MSA DER or held-out performance.
 
@@ -11,6 +11,10 @@ A separate section embeds the MSA authors' [published audio examples](https://xi
 - `dist/` — the local, self-contained static website and browser-compatible audio files. The published GitHub Pages snapshot places these files at the repository root, with audio under `audio/spk2`–`audio/spk5`.
 - `AUDIO_PROVENANCE.md` — dataset attribution, experiment roots, and selection scope.
 - `CODE_RELEASE_PLAN.md` — intended structure and validation gates for a later model-code release. No model weights or private evaluation assets are included.
+
+## Inference code availability
+
+The inference implementation is being organized and reviewed. **It is not public in this audio repository.** If the paper is accepted, we plan to release the audited inference code and its reproducibility instructions. Until then, do not treat this website as a runnable model release or infer implementation details from the selected audio examples.
 
 ## Run locally
 
