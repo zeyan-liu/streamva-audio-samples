@@ -1,6 +1,6 @@
 # Future code-release staging
 
-This gallery intentionally separates **listening assets** from a later reproducible model-code release. The inference implementation is under review and is not public. If the paper is accepted, an audited release is planned. Before adding research code to this repository or linking a new code repository:
+This gallery intentionally separates **listening assets** from a later reproducible model-code release. **Code is coming soon.** Before adding research code to this repository or linking a new code repository:
 
 1. Freeze the exact SMVA configuration corresponding to any public paper table. Keep the Qwen3-TTS and X-VC backend-specific paths distinct.
 2. Export only first-party implementation, minimal inference configuration, environment lockfiles, and a small reproducibility smoke test. Audit adapted third-party code and weights against their own licenses.

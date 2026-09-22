@@ -73,6 +73,37 @@ function sessionCell(id) {
   return td;
 }
 
+function transcriptRow(id, columnCount) {
+  const row = document.createElement('tr');
+  row.className = 'transcript-row';
+  const cell = document.createElement('td');
+  cell.colSpan = columnCount;
+  const details = document.createElement('details');
+  details.className = 'transcript-details';
+  const summary = document.createElement('summary');
+  summary.textContent = 'Text supplied to the renderer';
+  const note = document.createElement('p');
+  note.className = 'transcript-note';
+  note.textContent = 'Speaker labels A–E are session-local display labels. Text is the external-ASR transcript supplied to the renderer; it is shown verbatim and is not a reference transcription.';
+  const list = document.createElement('ol');
+  list.className = 'transcript-list';
+  (rendererTranscripts[id] || []).forEach(({ speaker, text }) => {
+    const item = document.createElement('li');
+    const label = document.createElement('span');
+    label.className = 'speaker-label';
+    label.textContent = `Speaker ${speaker}`;
+    const words = document.createElement('span');
+    words.className = 'transcript-text';
+    words.textContent = text;
+    item.append(label, words);
+    list.append(item);
+  });
+  details.append(summary, note, list);
+  cell.append(details);
+  row.append(cell);
+  return row;
+}
+
 const pairedRoot = document.querySelector('#sample-groups');
 sessions.forEach(({ speakers, ids }) => {
   const section = group(`${speakers} speakers`, pairedRoot);
@@ -85,6 +116,7 @@ sessions.forEach(({ speakers, ids }) => {
       audioCell(`${prefix}-qwen3tts.wav`, `${speakers}-speaker Qwen3-TTS session ${id}`),
       audioCell(`${prefix}-xvc.wav`, `${speakers}-speaker X-VC session ${id}`));
     tbody.append(row);
+    tbody.append(transcriptRow(id, 4));
   });
   section.append(wrap);
 });

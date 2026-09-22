@@ -12,9 +12,9 @@ A separate section embeds the MSA authors' [published audio examples](https://xi
 - `AUDIO_PROVENANCE.md` — dataset attribution, experiment roots, and selection scope.
 - `CODE_RELEASE_PLAN.md` — intended structure and validation gates for a later model-code release. No model weights or private evaluation assets are included.
 
-## Inference code availability
+## Code availability
 
-The inference implementation is being organized and reviewed. **It is not public in this audio repository.** If the paper is accepted, we plan to release the audited inference code and its reproducibility instructions. Until then, do not treat this website as a runnable model release or infer implementation details from the selected audio examples.
+**Code is coming soon.** This audio repository is not yet a runnable model release; do not infer implementation details from its selected listening examples.
 
 ## Run locally
 
